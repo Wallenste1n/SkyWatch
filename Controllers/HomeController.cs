@@ -8,7 +8,11 @@ public class HomeController : Controller
 {
     public IActionResult Index()
     {
-        return View();
+        //creating a weatherController object to deal with it functions
+        WeatherController weatherController = new WeatherController();
+        
+        //gives view a data from API
+        return View(weatherController.GetWeatherData());
     }
 
     public IActionResult Privacy()
