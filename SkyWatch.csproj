@@ -6,4 +6,12 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.5-beta1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Weather\Index.cshtml" />
+    </ItemGroup>
+
 </Project>
