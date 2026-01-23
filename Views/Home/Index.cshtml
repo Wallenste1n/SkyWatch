@@ -5,4 +5,10 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1>Location = @Model.name</h1>
+    <h1>Weather is @Model.weather[0].Description</h1>
+    <h1>Temperature = @Math.Floor(Model.main.temp)°C </h1>
+    <h1>Temperature feels like = @Math.Floor(Model.main.feels_like)°C</h1>
+    <h1>Humidity = @Model.main.humidity%</h1>
+    <h1>Wind speed = @Model.wind.speed m/s</h1>
 </div>
