@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using SkyWatch.Models;
+using SkyWatch.Services;
 
 namespace SkyWatch.Controllers;
 
