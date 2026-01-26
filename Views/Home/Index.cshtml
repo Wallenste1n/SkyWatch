@@ -4,12 +4,23 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    <h1>Location = @Model.name</h1>
-    <h1>Weather is @Model.weather[0].Description</h1>
-    <h1>Temperature = @Math.Floor(Model.main.temp)°C </h1>
-    <h1>Temperature feels like = @Math.Floor(Model.main.feels_like)°C</h1>
-    <h1>Humidity = @Model.main.humidity%</h1>
-    <h1>Wind speed = @Model.wind.speed m/s</h1>
+    <h1 class="display-4">SkyWatch</h1>
+    <form method="post">
+        <input name="cityName"/>
+        <input type="submit" value="Submit">
+    </form>
+    
+    @*Checks for null, because in first appearence it will cause Exception
+    Maybe should be implemented differently in the future,
+    because site will have different languages 
+    + information needs to stay on the site anyways, even in first appearence*@
+    @if (Model != null)
+    {
+        <h1>Location = @Model.name</h1>
+        <h1>Weather is @Model.weather[0].Description</h1>
+        <h1>Temperature = @Math.Floor(Model.main.temp)°C </h1>
+        <h1>Temperature feels like = @Math.Floor(Model.main.feels_like)°C</h1>
+        <h1>Humidity = @Model.main.humidity%</h1>
+        <h1>Wind speed = @Model.wind.speed m/s</h1> 
+    }
 </div>
