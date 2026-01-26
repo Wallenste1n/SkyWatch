@@ -6,6 +6,15 @@ namespace SkyWatch.Controllers;
 
 public class HomeController : Controller
 {
+    //for getting WeatherService functions
+    private readonly WeatherService _weatherService;
+
+    public HomeController(WeatherService weatherService)
+    {
+        _weatherService = weatherService;
+    }
+    
+    [HttpGet]
     public IActionResult Index()
     {
         return View();
