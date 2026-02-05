@@ -42,8 +42,29 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> Index(string cityName)
     {
-        var model = await _weatherService.GetWeatherAsync(cityName ?? "London");
-        return View(model);
+        //gives model info about current language in 2 letter format "en", "ru" etc.
+        viewModel.lang = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+        
+        //Gives info for class from API service
+        viewModel.Weather = await _weatherService.GetWeatherAsync(
+            viewModel.cityName,
+            viewModel.units,
+            viewModel.lang
+            );
+
+        //Adds weather_city cookie to the client for storing chosen city name 
+        Response.Cookies.Append("weather_city", viewModel.cityName, new CookieOptions
+        {
+            Expires = DateTimeOffset.UtcNow.AddDays(30)
+        });
+        
+        //Adds weather_units cookie to the client for chosen storing units 
+        Response.Cookies.Append("weather_units", viewModel.units, new CookieOptions
+        {
+            Expires = DateTimeOffset.UtcNow.AddDays(30)
+        });
+        
+        return View(viewModel);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
