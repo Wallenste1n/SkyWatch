@@ -19,7 +19,7 @@ public class WeatherService : IWeatherService
     }
 
     //Getting information from API response and send its info to WeatherModel in async
-    public async Task<WeatherModel> GetWeatherAsync(string city)
+    public async Task<WeatherModel> GetWeatherAsync(string city, string units, string lang)
     {
         //apiKey is getting Key for WeatherAPI from the JSON file
         string? apiKey = _config["Key"];
