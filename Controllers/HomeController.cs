@@ -1,22 +1,24 @@
 using System.Diagnostics;
+using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
+using SkyWatch.Interfaces;
 using SkyWatch.Models;
-using SkyWatch.Services;
 
 namespace SkyWatch.Controllers;
 
 public class HomeController : Controller
 {
     //for getting WeatherService functions
-    private readonly WeatherService _weatherService;
+    private readonly IWeatherService _weatherService;
 
-    public HomeController(WeatherService weatherService)
+    public HomeController(IWeatherService weatherService)
     {
         _weatherService = weatherService;
     }
     
+    //Gets info of cookies and return weather data
     [HttpGet]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
         var model = new WeatherViewModel();
 
@@ -36,11 +38,12 @@ public class HomeController : Controller
         
         return View(model);
     }
-
-    //Getting name of the city and post View with the model in async
+    
+    //Filling model class with language info
+    //Creates cookie for keeping chosen city and units in browser memory
     //Doing all of it with using WeatherService
     [HttpPost]
-    public async Task<IActionResult> Index(string cityName)
+    public async Task<IActionResult> Index(WeatherViewModel viewModel)
     {
         //gives model info about current language in 2 letter format "en", "ru" etc.
         viewModel.lang = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
