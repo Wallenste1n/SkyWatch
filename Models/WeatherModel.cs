@@ -27,6 +27,12 @@ public class Main
     //Current temperature feels like
     public double feels_like { get; set; }
     
+    //Minimal temperature
+    public double temp_min { get; set; }
+    
+    //Maximum temperature
+    public double temp_max { get; set; }
+    
     //Current humidity
     public int humidity { get; set; }
 }
