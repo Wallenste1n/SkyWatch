@@ -40,5 +40,8 @@ public class Main
 public class Wind
 {
     //speed of the wind
-    public double speed;
+    public double speed { get; set; }
+    
+    //Wind direction (in degrees)
+    public int deg { get; set; }
 }
