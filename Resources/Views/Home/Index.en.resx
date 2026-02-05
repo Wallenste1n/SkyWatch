@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Celsius" xml:space="preserve">
+        <value>Celsius</value>
+    </data>
+    <data name="CityName" xml:space="preserve">
+        <value>City</value>
+    </data>
+    <data name="CurrentTemperature" xml:space="preserve">
+        <value>Temperature</value>
+    </data>
+    <data name="FeelsLikeTemperature" xml:space="preserve">
+        <value>Temperature feels like</value>
+    </data>
+    <data name="Fahrenheit" xml:space="preserve">
+        <value>Fahrenheit</value>
+    </data>
+    <data name="Humidity" xml:space="preserve">
+        <value>Humidity</value>
+    </data>
+    <data name="Kelvin" xml:space="preserve">
+        <value>Kelvin</value>
+    </data>
+    <data name="StateOfWeather" xml:space="preserve">
+        <value>Weather</value>
+    </data>
+    <data name="SubmitButton" xml:space="preserve">
+        <value>Submit</value>
+    </data>
+    <data name="WindSpeed" xml:space="preserve">
+        <value>Wind speed</value>
+    </data>
+    <data name="MaximumTemperature" xml:space="preserve">
+        <value>Maximum Temperature</value>
+    </data>
+    <data name="MinimumTemperature" xml:space="preserve">
+        <value>Minimum Temperature</value>
+    </data>
+    <data name="WindDirection" xml:space="preserve">
+        <value>Wind direction</value>
+    </data>
+</root>
