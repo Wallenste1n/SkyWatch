@@ -23,8 +23,6 @@ public class WeatherService : IWeatherService
     {
         //apiKey is getting Key for WeatherAPI from the JSON file
         string? apiKey = _config["Key"];
-        string units = "metric";
-        string lang = "en";
         string url = $"https://api.openweathermap.org/data/2.5/weather" +
                      $"?q={city}&appid={apiKey}&units={units}&lang={lang}";
 
