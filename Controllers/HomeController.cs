@@ -18,7 +18,23 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        return View();
+        var model = new WeatherViewModel();
+
+        //Filling information with cookie from user
+        model.cityName = Request.Cookies["weather_city"];
+        model.units = Request.Cookies["weather_units"] ?? "metric";
+        model.lang = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+
+        //if we get cookie of city name, then we get info for model and return it
+        if (!string.IsNullOrEmpty(model.cityName))
+        {
+            model.Weather = await _weatherService.GetWeatherAsync(
+                model.cityName,
+                model.units,
+                model.lang);  
+        }
+        
+        return View(model);
     }
 
     //Getting name of the city and post View with the model in async
