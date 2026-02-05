@@ -1,9 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - SkyWatch</title>
+    <title>@ViewData["Title"]SkyWatch</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
@@ -21,10 +24,18 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Weather</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@Localizer["NameOfWeatherTabInNavigator"]</a>
                     </li>
                 </ul>
             </div>
+            <form asp-controller="Culture" asp-action="SetLanguage" method="post">
+                <label>@Localizer["LanguageLabel"]</label>
+                <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString"/>
+                <select name="culture" onchange="this.form.submit()">
+                    <option value="en" selected="@(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "en")">English</option>
+                    <option value="ru" selected="@(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ru")">Русский</option>
+                </select>
+            </form>
         </div>
     </nav>
 </header>
