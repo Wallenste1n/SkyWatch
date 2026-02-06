@@ -69,6 +69,15 @@ namespace SkyWatch.Resources.Views.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Данные загружается....
+        /// </summary>
+        internal static string LoadingMessage {
+            get {
+                return ResourceManager.GetString("LoadingMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Погода.
         /// </summary>
         internal static string NameOfWeatherTabInNavigator {
