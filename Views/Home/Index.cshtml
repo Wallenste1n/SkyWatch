@@ -5,45 +5,69 @@
 @{
     ViewData["Title"] = "Weather - ";
 }
+
+@if (Model.ErrorType != WeatherErrorType.None)
+{ 
+    <div class="alert alert-danger">
+        @Localizer[Model.ErrorType.ToString()]
+    </div>
+}
+
 @*Form for inputing name of the city in API*@
 <div class="text-center">
     <h1 class="display-4">SkyWatch</h1>
-     <form method="post" id="weatherForm">
-         <input name="cityName" value="@Model.cityName"/>
+    <form method="post" id="weatherForm">
+        <input name="cityName" value="@Model.cityName"/>
          
-         <select name="units" id="unitsSelect">
-             <option value="metric" selected="@(Model.units == "metric")">@Localizer["Celsius"] &deg;C</option>
-             <option value="imperial" selected="@(Model.units == "imperial")">@Localizer["Fahrenheit"] &deg;F</option>
-             <option value="standard" selected="@(Model.units == "standard")">@Localizer["Kelvin"] K</option>
-         </select>
+        <select name="units" id="unitsSelect">
+            <option value="metric" selected="@(Model.units == "metric")">@Localizer["Celsius"] &deg;C</option>
+            <option value="imperial" selected="@(Model.units == "imperial")">@Localizer["Fahrenheit"] &deg;F</option>
+            <option value="standard" selected="@(Model.units == "standard")">@Localizer["Kelvin"] K</option>
+        </select>
 
-         <input type="submit" value="@Localizer["SubmitButton"]">
-     </form>
+        <input type="submit" value="@Localizer["SubmitButton"]">
+    </form>
 
-    @*Checks for null, because in first appearence it might cause Exception
-    Shows weather info*@
-     @if (Model.Weather != null)
-     {
-         <h1>@Localizer["CityName"] - @Model.Weather.name</h1>
-         <h1>@Localizer["StateOfWeather"] - @Model.Weather.weather[0].Description</h1>
-         <h1>@Localizer["CurrentTemperature"] =
-             @Math.Round(Model.Weather.main.temp)
-             @Model.TemperatureUnit
-         </h1>
-         <h1>@Localizer["FeelsLikeTemperature"] =
-             @Math.Round(Model.Weather.main.feels_like)
-             @Model.TemperatureUnit
-         </h1>
-         <h1>@Localizer["MinimumTemperature"] =
-             @Math.Round(Model.Weather.main.temp_min)
-             @Model.TemperatureUnit
-         </h1>
-         <h1>@Localizer["MaximumTemperature"] =
-             @Math.Round(Model.Weather.main.temp_max)
-             @Model.TemperatureUnit
-         </h1>
-         <h1>@Localizer["Humidity"] = @Model.Weather.main.humidity%</h1>
-         <h1>@Localizer["WindSpeed"] = @Model.Weather.wind.speed m/s</h1>
-         <h1>@Localizer["WindDirection"] = @Model.Weather.wind.deg&deg;</h1>
-     }
+    @*Checks for null, because in first appearence it might cause Exception 
+    and shows skeleton before data (probably not working)*@
+    @if (Model.Weather == null && string.IsNullOrWhiteSpace(Model.ErrorType.ToString()))
+    {
+        <div class="weather-skeleton">
+            <div class="skeleton-line title"></div>
+            <div class="skeleton-line temp"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line short"></div>
+        </div>
+    }
+    
+    @*Shows weather info*@
+    @if (Model.Weather != null)
+    { 
+        <div id="weather-data">
+            <h1>@Localizer["CityName"] - @Model.Weather.name</h1>
+            <h1>@Localizer["StateOfWeather"] - @Model.Weather.weather[0].Description</h1>
+            <h1>@Localizer["CurrentTemperature"] =
+                @Math.Round(Model.Weather.main.temp)
+                @Model.TemperatureUnit
+            </h1>
+            <h1>@Localizer["FeelsLikeTemperature"] =
+                @Math.Round(Model.Weather.main.feels_like)
+                @Model.TemperatureUnit
+            </h1>
+            <h1>@Localizer["MinimumTemperature"] =
+                @Math.Round(Model.Weather.main.temp_min)
+                @Model.TemperatureUnit
+            </h1>
+            <h1>@Localizer["MaximumTemperature"] =
+                @Math.Round(Model.Weather.main.temp_max)
+                @Model.TemperatureUnit
+            </h1>
+            <h1>@Localizer["Humidity"] = @Model.Weather.main.humidity%</h1>
+            <h1>@Localizer["WindSpeed"] =
+                @Model.Weather.wind.speed
+                @Localizer[$"{Model.SpeedWindUnit}"]
+            </h1>
+            <h1>@Localizer["WindDirection"] = @Localizer[$"{Model.WindDirectionKey}"] (@Model.Weather.wind.deg&deg;)</h1>
+        </div>
+    }
 </div>
