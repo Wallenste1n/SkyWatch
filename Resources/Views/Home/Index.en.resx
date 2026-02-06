@@ -57,4 +57,52 @@
     <data name="WindDirection" xml:space="preserve">
         <value>Wind direction</value>
     </data>
+    <data name="CityEmpty" xml:space="preserve">
+        <value>Please enter a city name.</value>
+    </data>
+    <data name="CityNotFound" xml:space="preserve">
+        <value>City not found.</value>
+    </data>
+    <data name="ApiUnavaiblable" xml:space="preserve">
+        <value>Weather service is temporarily unavailable.</value>
+    </data>
+    <data name="InvalidApiKey" xml:space="preserve">
+        <value>Invalid API key.</value>
+    </data>
+    <data name="TooManyRequests" xml:space="preserve">
+        <value>Too many requests. Please try later.</value>
+    </data>
+    <data name="Unknown" xml:space="preserve">
+        <value>Unexpected error occurred.</value>
+    </data>
+    <data name="Wind_East" xml:space="preserve">
+        <value>East</value>
+    </data>
+    <data name="Wind_North" xml:space="preserve">
+        <value>North</value>
+    </data>
+    <data name="Wind_NorthEast" xml:space="preserve">
+        <value>North-East</value>
+    </data>
+    <data name="Wind_NorthWest" xml:space="preserve">
+        <value>North-West</value>
+    </data>
+    <data name="Wind_South" xml:space="preserve">
+        <value>South</value>
+    </data>
+    <data name="Wind_SouthEast" xml:space="preserve">
+        <value>South-East</value>
+    </data>
+    <data name="Wind_SouthWest" xml:space="preserve">
+        <value>South-West</value>
+    </data>
+    <data name="Wind_West" xml:space="preserve">
+        <value>West</value>
+    </data>
+    <data name="m/s" xml:space="preserve">
+        <value>meters/second</value>
+    </data>
+    <data name="m/h" xml:space="preserve">
+        <value>miles/hour</value>
+    </data>
 </root>

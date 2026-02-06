@@ -60,6 +60,15 @@ namespace SkyWatch.Resources.Views.Home {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Weather service is temporarily unavailable..
+        /// </summary>
+        internal static string ApiUnavaiblable {
+            get {
+                return ResourceManager.GetString("ApiUnavaiblable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Celsius.
         /// </summary>
         internal static string Celsius {
@@ -69,11 +78,29 @@ namespace SkyWatch.Resources.Views.Home {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter a city name..
+        /// </summary>
+        internal static string CityEmpty {
+            get {
+                return ResourceManager.GetString("CityEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to City.
         /// </summary>
         internal static string CityName {
             get {
                 return ResourceManager.GetString("CityName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to City not found..
+        /// </summary>
+        internal static string CityNotFound {
+            get {
+                return ResourceManager.GetString("CityNotFound", resourceCulture);
             }
         }
         
@@ -114,11 +141,38 @@ namespace SkyWatch.Resources.Views.Home {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid API key..
+        /// </summary>
+        internal static string InvalidApiKey {
+            get {
+                return ResourceManager.GetString("InvalidApiKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kelvin.
         /// </summary>
         internal static string Kelvin {
             get {
                 return ResourceManager.GetString("Kelvin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to miles/hour.
+        /// </summary>
+        internal static string m_h {
+            get {
+                return ResourceManager.GetString("m/h", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to meters/second.
+        /// </summary>
+        internal static string m_s {
+            get {
+                return ResourceManager.GetString("m/s", resourceCulture);
             }
         }
         
@@ -155,6 +209,96 @@ namespace SkyWatch.Resources.Views.Home {
         internal static string SubmitButton {
             get {
                 return ResourceManager.GetString("SubmitButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Too many requests. Please try later..
+        /// </summary>
+        internal static string TooManyRequests {
+            get {
+                return ResourceManager.GetString("TooManyRequests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error occurred..
+        /// </summary>
+        internal static string Unknown {
+            get {
+                return ResourceManager.GetString("Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to East.
+        /// </summary>
+        internal static string Wind_East {
+            get {
+                return ResourceManager.GetString("Wind_East", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to North.
+        /// </summary>
+        internal static string Wind_North {
+            get {
+                return ResourceManager.GetString("Wind_North", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to North-East.
+        /// </summary>
+        internal static string Wind_NorthEast {
+            get {
+                return ResourceManager.GetString("Wind_NorthEast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to North-West.
+        /// </summary>
+        internal static string Wind_NorthWest {
+            get {
+                return ResourceManager.GetString("Wind_NorthWest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to South.
+        /// </summary>
+        internal static string Wind_South {
+            get {
+                return ResourceManager.GetString("Wind_South", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to South-East.
+        /// </summary>
+        internal static string Wind_SouthEast {
+            get {
+                return ResourceManager.GetString("Wind_SouthEast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to South-West.
+        /// </summary>
+        internal static string Wind_SouthWest {
+            get {
+                return ResourceManager.GetString("Wind_SouthWest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to West.
+        /// </summary>
+        internal static string Wind_West {
+            get {
+                return ResourceManager.GetString("Wind_West", resourceCulture);
             }
         }
         
