@@ -57,4 +57,52 @@
     <data name="WindDirection" xml:space="preserve">
         <value>Направление ветра</value>
     </data>
+    <data name="CityEmpty" xml:space="preserve">
+        <value>Введите название города.</value>
+    </data>
+    <data name="CityNotFound" xml:space="preserve">
+        <value>Город не найден.</value>
+    </data>
+    <data name="ApiUnavaiblable" xml:space="preserve">
+        <value>Сервис погоды временно недоступен.</value>
+    </data>
+    <data name="InvalidApiKey" xml:space="preserve">
+        <value>Неверный API ключ.</value>
+    </data>
+    <data name="TooManyRequests" xml:space="preserve">
+        <value>Слишком много запросов. Пожалуйста попробуйте позже.</value>
+    </data>
+    <data name="Unknown" xml:space="preserve">
+        <value>Произошла непредвиденная ошибка.</value>
+    </data>
+    <data name="Wind_North" xml:space="preserve">
+        <value>Север</value>
+    </data>
+    <data name="Wind_NorthEast" xml:space="preserve">
+        <value>Северо-восток</value>
+    </data>
+    <data name="Wind_East" xml:space="preserve">
+        <value>Восток</value>
+    </data>
+    <data name="Wind_SouthEast" xml:space="preserve">
+        <value>Юго-восток</value>
+    </data>
+    <data name="Wind_South" xml:space="preserve">
+        <value>Юг</value>
+    </data>
+    <data name="Wind_SouthWest" xml:space="preserve">
+        <value>Юго-запад</value>
+    </data>
+    <data name="Wind_West" xml:space="preserve">
+        <value>Запад</value>
+    </data>
+    <data name="Wind_NorthWest" xml:space="preserve">
+        <value>Северо-запад</value>
+    </data>
+    <data name="m/s" xml:space="preserve">
+        <value>метров/cекунду</value>
+    </data>
+    <data name="m/h" xml:space="preserve">
+        <value>мили/час</value>
+    </data>
 </root>
