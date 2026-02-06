@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     //Looking for location through user's IP
     fetch("https://ipapi.co/json/")
-        .then(r => r.json())
+        .then(response => response.json())
         .then(data => {
             if(!data.city) return;
             
@@ -31,4 +31,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 form.submit();
             }
         })
-})
+});
+//Changes states for loader of the site (sets or remove "hidden" tag)
+const loader = document.getElementById("loader");
+
+document.addEventListener("submit", () => {
+    loader.classList.remove("hidden");
+});
+
+window.addEventListener("load", () => {
+    loader.classList.add("hidden");
+});
+
+//can be used later
+function showLoader(){
+    document.getElementById("loader").classList.remove("hidden");
+}
+
+//when submits hides weather data and shows skeleton (idk if it's working, probably not)
+document.addEventListener("submit", () =>{
+    weather.classList().add("hidden");
+    skeleton.classList().remove("hidden");
+});
