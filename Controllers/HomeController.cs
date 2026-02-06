@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
+using SkyWatch.Helper;
 using SkyWatch.Interfaces;
 using SkyWatch.Models;
 
@@ -20,20 +21,28 @@ public class HomeController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var model = new WeatherViewModel();
-
-        //Filling information with cookie from user
-        model.cityName = Request.Cookies["weather_city"];
-        model.units = Request.Cookies["weather_units"] ?? "metric";
-        model.lang = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+        var model = new WeatherViewModel
+        {
+            //Filling information with cookie from user
+            cityName = Request.Cookies["weather_city"],
+            units = Request.Cookies["weather_units"] ?? "metric",
+            lang = CultureInfo.CurrentCulture.TwoLetterISOLanguageName
+        };
 
         //if we get cookie of city name, then we get info for model and return it
-        if (!string.IsNullOrEmpty(model.cityName))
+        if (!string.IsNullOrWhiteSpace(model.cityName))
         {
-            model.Weather = await _weatherService.GetWeatherAsync(
+            var result = await _weatherService.GetWeatherAsync(
                 model.cityName,
                 model.units,
-                model.lang);  
+                model.lang);
+
+            //Sets info to Weather class and type for Error to handle it
+            model.Weather = result.Weather;
+            model.ErrorType = result.ErrorType;
+            
+            //Gets geographical direction (East, West etc.) as a key for localization
+            model.WindDirectionKey = WindDirectionHelper.GetDirection(model.Weather.wind.deg);
         }
         
         return View(model);
@@ -49,12 +58,23 @@ public class HomeController : Controller
         viewModel.lang = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
         
         //Gives info for class from API service
-        viewModel.Weather = await _weatherService.GetWeatherAsync(
+        var result = await _weatherService.GetWeatherAsync(
             viewModel.cityName,
             viewModel.units,
             viewModel.lang
             );
 
+        //Sets info to Weather class and type for Error to handle it
+        viewModel.Weather = result.Weather;
+        viewModel.ErrorType = result.ErrorType;
+        
+        //if user didn't leave input to be blank returns View without API info
+        if (viewModel.ErrorType == WeatherErrorType.CityEmpty)
+            return View(viewModel);
+
+        //Gets geo direction (East, West etc.) as a key for localization
+        viewModel.WindDirectionKey = WindDirectionHelper.GetDirection(viewModel.Weather.wind.deg);
+        
         //Adds weather_city cookie to the client for storing chosen city name 
         Response.Cookies.Append("weather_city", viewModel.cityName, new CookieOptions
         {
