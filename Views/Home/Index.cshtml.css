@@ -1,0 +1,31 @@
+﻿.weather-skeleton {
+    padding: 20px;
+}
+
+.skeleton-line {
+    height: 16px;
+    background: #eee;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    animation: pulse 1.5s infinite;
+}
+
+.skeleton-line.title {
+    width: 60%;
+    height: 22px;
+}
+
+.skeleton-line.temp {
+    width: 40%;
+    height: 30px;
+}
+
+.skeleton-line.short {
+    width: 30%;
+}
+
+@keyframes pulse {
+    0% { opacity: .6; }
+    50% { opacity: 1; }
+    100% { opacity: .6; }
+}
