@@ -7,7 +7,12 @@ public class WeatherViewModel
     public string units { get; set; } = "metric";
     public string lang { get; set; } = "en";
     
+    //Keys for localization geographical directions 
+    public string WindDirectionKey { get; set; }
     public WeatherModel? Weather { get; set; }
+
+    //Contains Error types for handling them
+    public WeatherErrorType ErrorType { get; set; } = WeatherErrorType.None;
 
     //switches API metrics to it units
     public string TemperatureUnit =>
@@ -16,6 +21,16 @@ public class WeatherViewModel
             "metric" => "°C",
             "imperial" => "°F",
             "standard" => "K",
+            _ => ""
+        };
+    
+    //Converts API metrics into speed units
+    public string SpeedWindUnit =>
+        units switch
+        {
+            "metric" => "m/s",
+            "imperial" => "m/h",
+            "standard" => "m/s",
             _ => ""
         };
 }
