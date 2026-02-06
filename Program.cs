@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient<IWeatherService ,WeatherService>();
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.AddControllersWithViews().AddViewLocalization().AddDataAnnotationsLocalization();
+builder.Services.AddHttpContextAccessor();
 
 var supportedCultures = new[] { "en", "ru" };
 var localizationOptions = new RequestLocalizationOptions()
