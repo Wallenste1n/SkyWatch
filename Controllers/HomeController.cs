@@ -72,6 +72,9 @@ public class HomeController : Controller
         if (viewModel.ErrorType == WeatherErrorType.CityEmpty)
             return View(viewModel);
 
+        if (viewModel.ErrorType == WeatherErrorType.CityNotFound)
+            return View(viewModel);
+
         //Gets geo direction (East, West etc.) as a key for localization
         viewModel.WindDirectionKey = WindDirectionHelper.GetDirection(viewModel.Weather.wind.deg);
         
