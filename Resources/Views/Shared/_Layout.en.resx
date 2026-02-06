@@ -24,4 +24,7 @@
     <data name="LanguageLabel" xml:space="preserve">
         <value>Language</value>
     </data>
+    <data name="LoadingMessage" xml:space="preserve">
+        <value>Data loading...</value>
+    </data>
 </root>
