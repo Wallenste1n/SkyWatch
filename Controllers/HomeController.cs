@@ -68,12 +68,14 @@ public class HomeController : Controller
         viewModel.Weather = result.Weather;
         viewModel.ErrorType = result.ErrorType;
         
-        //if user didn't leave input to be blank returns View without API info
-        if (viewModel.ErrorType == WeatherErrorType.CityEmpty)
-            return View(viewModel);
-
-        if (viewModel.ErrorType == WeatherErrorType.CityNotFound)
-            return View(viewModel);
+        //if user didn't leave input to be blank, or city wasn't find returns View without API info
+        switch (viewModel.ErrorType)
+        {
+            case WeatherErrorType.CityEmpty:
+                return View(viewModel);
+            case WeatherErrorType.CityNotFound:
+                return View(viewModel);
+        }
 
         //Gets geo direction (East, West etc.) as a key for localization
         viewModel.WindDirectionKey = WindDirectionHelper.GetDirection(viewModel.Weather.wind.deg);
