@@ -72,7 +72,6 @@ public class HomeController : Controller
         switch (viewModel.ErrorType)
         {
             case WeatherErrorType.CityEmpty:
-                return View(viewModel);
             case WeatherErrorType.CityNotFound:
                 return View(viewModel);
         }
