@@ -1,0 +1,13 @@
+﻿@model List<CitySearchResult>
+
+<ul class="suggestions-list">
+    @foreach (var city in Model)
+    {
+        <li class="suggestion-item"
+            data-lat="@city.Lat"
+            data-lon="@city.Lon"
+            data-name="@city.DisplayName">
+            @city.DisplayName
+        </li>
+    }
+</ul>
