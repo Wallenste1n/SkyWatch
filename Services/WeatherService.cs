@@ -27,21 +27,14 @@ public class WeatherService : IWeatherService
     }
 
     //Getting information from API response and send its info to WeatherModel in async
-    //doing attemps to recconect if network gone, if yes, then trying to fallback
+    //doing attempts to reconnect if network gone, if yes, then trying to fallback
     //Handles possible exceptions
-    public async Task<WeatherServiceResult> GetWeatherAsync(string city, string units, string lang)
+    public async Task<WeatherServiceResult> GetWeatherAsync(double lat, double lon, string units, string lang)
     {
-        //if user didn't write anything in input then gives CityEmpty error
-        if (string.IsNullOrWhiteSpace(city))
-        {
-            _logger.LogWarning("City name is empty");
-            return new WeatherServiceResult { ErrorType = WeatherErrorType.CityEmpty };
-        }
-           
         //apiKey is getting Key for WeatherAPI from the JSON file
         string? apiKey = _config["Key"];
         string url = $"https://api.openweathermap.org/data/2.5/weather" +
-                     $"?q={city}&appid={apiKey}&units={units}&lang={lang}";
+                     $"?lat={lat}&lon={lon}&appid={apiKey}&units={units}&lang={lang}";
 
         HttpResponseMessage? response = null;
         
@@ -93,21 +86,21 @@ public class WeatherService : IWeatherService
         if (response == null || !response.IsSuccessStatusCode)
         {
             _logger.LogError("All API attempts failed. Using Fallback");
-            return TryFallback(city, units);
+            return TryFallback(lat, lon, units);
         }
         
         var json = await response.Content.ReadAsStringAsync();
-        var weather = JsonConvert.DeserializeObject<WeatherModel>(json);
+        var weatherResult = JsonConvert.DeserializeObject<WeatherModel>(json);
 
         //Saves Fallback states 
-        SaveFallback(city, units, weather);
+        SaveFallback(lat, lon, units, weatherResult);
         
-        return new WeatherServiceResult { Weather = weather };
+        return new WeatherServiceResult { Weather = weatherResult };
     }
 
     //Trying to fallback code
     //That means if something goes wrong, program trying to set it's state to the previous one (that works)
-    private WeatherServiceResult TryFallback(string city, string units)
+    private WeatherServiceResult TryFallback(double lat, double lon, string units)
     {
         //Looking for weather_fallback cookie
         var context = _httpContext.HttpContext;
@@ -119,7 +112,11 @@ public class WeatherService : IWeatherService
 
         //if fallback is not equal to entered city and units, then gives error
         var fallback = JsonConvert.DeserializeObject<FallbackWeather>(cookie);
-        if (fallback.City != city || fallback.Units != units)
+        const double epsilon = 0.0001;
+        
+        if (Math.Abs(fallback.Lat - lat) > epsilon || 
+            Math.Abs(fallback.Lon - lon) > epsilon || 
+            fallback.Units != units)
             return new WeatherServiceResult { ErrorType = WeatherErrorType.ApiUnavailable };
                 
         _logger.LogInformation("Fallback weather used");
@@ -131,7 +128,7 @@ public class WeatherService : IWeatherService
     }
     
     //Saves state of the data for possible fallback
-    private void SaveFallback(string city, string units, WeatherModel weather)
+    private void SaveFallback(double lat, double lon, string units, WeatherModel weather)
     {
         //if there is no context, then function will not save anything
         var context = _httpContext.HttpContext;
@@ -139,7 +136,8 @@ public class WeatherService : IWeatherService
 
         var fallback = new FallbackWeather
         {
-            City = city,
+            Lat = lat,
+            Lon = lon,
             Units = units,
             Weather = weather
         };
