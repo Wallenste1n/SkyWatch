@@ -4,5 +4,6 @@
 public class WeatherServiceResult
 {
     public WeatherModel? Weather { get; set; }
+    public List<WeatherGeoCoderModel>? GeoCoder { get; set; }
     public WeatherErrorType ErrorType { get; set; } = WeatherErrorType.None;
 }
