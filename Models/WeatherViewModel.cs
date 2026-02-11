@@ -4,8 +4,13 @@ public class WeatherViewModel
 {
     //UI state
     public string cityName { get; set; } = "London";
+    public double Lat { get; set; }
+    public double Lon { get; set; }
     public string units { get; set; } = "metric";
     public string lang { get; set; } = "en";
+    public string? CityDisplayName { get; set; }
+    public string? Country { get; set; }
+    public string? State { get; set; }
     
     //Keys for localization geographical directions 
     public string WindDirectionKey { get; set; }
