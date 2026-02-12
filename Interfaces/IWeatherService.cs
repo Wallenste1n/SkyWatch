@@ -6,5 +6,5 @@ namespace SkyWatch.Interfaces;
 public interface IWeatherService
 {
     //for getting api and it's data in async
-    Task<WeatherServiceResult> GetWeatherAsync(string city, string units, string lang);
+    Task<WeatherServiceResult> GetWeatherAsync(double lat, double lon, string units, string lang);
 }
