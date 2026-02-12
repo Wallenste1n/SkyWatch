@@ -11,29 +11,45 @@ public class HomeController : Controller
 {
     //for getting WeatherService functions
     private readonly IWeatherService _weatherService;
+    private readonly IWeatherGeoCoderService _geoCoderService;
 
-    public HomeController(IWeatherService weatherService)
+    public HomeController(IWeatherService weatherService, IWeatherGeoCoderService geoCoderService)
     {
         _weatherService = weatherService;
+        _geoCoderService = geoCoderService;
     }
     
     //Gets info of cookies and return weather data
-    [HttpGet]
+    [HttpGet] 
     public async Task<IActionResult> Index()
     {
+        double.TryParse(Request.Cookies["city_lat"],
+            NumberStyles.Any,
+            CultureInfo.InvariantCulture,
+            out var lat);
+        
+        double.TryParse(Request.Cookies["city_lon"],
+            NumberStyles.Any,
+            CultureInfo.InvariantCulture,
+            out var lon);
+        
         var model = new WeatherViewModel
         {
             //Filling information with cookie from user
-            cityName = Request.Cookies["weather_city"],
+            cityName = Request.Cookies["weather_city"] ?? "",
+            Lat = lat,
+            Lon = lon,
             units = Request.Cookies["weather_units"] ?? "metric",
-            lang = CultureInfo.CurrentCulture.TwoLetterISOLanguageName
+            lang = CultureInfo.CurrentCulture.TwoLetterISOLanguageName,
+            CityDisplayName = Request.Cookies["weather_city"]
         };
-
+        
         //if we get cookie of city name, then we get info for model and return it
-        if (!string.IsNullOrWhiteSpace(model.cityName))
+        if (Math.Abs(lat) > 0.001 && Math.Abs(lon) > 0.001)
         {
             var result = await _weatherService.GetWeatherAsync(
-                model.cityName,
+                lat,
+                lon,
                 model.units,
                 model.lang);
 
@@ -42,7 +58,8 @@ public class HomeController : Controller
             model.ErrorType = result.ErrorType;
             
             //Gets geographical direction (East, West etc.) as a key for localization
-            model.WindDirectionKey = WindDirectionHelper.GetDirection(model.Weather.wind.deg);
+            if (model.Weather != null) 
+                model.WindDirectionKey = WindDirectionHelper.GetDirection(model.Weather.wind.deg);
         }
         
         return View(model);
@@ -54,44 +71,108 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> Index(WeatherViewModel viewModel)
     {
-        //gives model info about current language in 2 letter format "en", "ru" etc.
         viewModel.lang = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-        
-        //Gives info for class from API service
-        var result = await _weatherService.GetWeatherAsync(
-            viewModel.cityName,
-            viewModel.units,
-            viewModel.lang
-            );
 
-        //Sets info to Weather class and type for Error to handle it
-        viewModel.Weather = result.Weather;
-        viewModel.ErrorType = result.ErrorType;
-        
-        //if user didn't leave input to be blank, or city wasn't find returns View without API info
-        switch (viewModel.ErrorType)
+        double lat = 0;
+        double lon = 0;
+        string cityDisplayName = null;
+        string country = null;
+        string state = null;
+
+        if (!string.IsNullOrWhiteSpace(viewModel.cityName))
         {
-            case WeatherErrorType.CityEmpty:
-            case WeatherErrorType.CityNotFound:
+            //Checks if Geo Coder responds  
+            var geoCoderResult = await _geoCoderService.GetCityCoordinatesAsync(viewModel.cityName);
+            if (geoCoderResult == null || geoCoderResult.GeoCoder.Count == 0)
+            {
+                viewModel.ErrorType = WeatherErrorType.CityNotFound;
                 return View(viewModel);
+            }
+            
+            var geo = geoCoderResult.GeoCoder[0];
+            
+            //gets data from Geo Coder
+            lat = geo.lat;
+            lon = geo.lon;
+            cityDisplayName = geo.name;
+            country = geo.country;
+            state = geo.state;
+        }
+        else
+        {
+            //trying to get info from cookie, if changes units or city
+            double.TryParse(Request.Cookies["city_lat"],
+                NumberStyles.Any,
+                CultureInfo.InvariantCulture,
+                out lat);
+
+            double.TryParse(Request.Cookies["city_lon"],
+                NumberStyles.Any,
+                CultureInfo.InvariantCulture,
+                out lon);
+
+            cityDisplayName = Request.Cookies["weather_city"];
         }
 
-        //Gets geo direction (East, West etc.) as a key for localization
+        if (lat == 0 || lon == 0)
+        {
+            viewModel.ErrorType = WeatherErrorType.CityEmpty;
+            return View(viewModel);
+        }
+
+        //Getting info from current Weather API
+        var result = await _weatherService.GetWeatherAsync(
+            lat,
+            lon,
+            viewModel.units ?? "metric",
+            viewModel.lang
+        );
+
+        viewModel.Weather = result.Weather;
+        viewModel.ErrorType = result.ErrorType;
+
+        if (viewModel.Weather == null)
+            return View(viewModel);
+
+        //Fills info to view it on the site
         viewModel.WindDirectionKey = WindDirectionHelper.GetDirection(viewModel.Weather.wind.deg);
         
-        //Adds weather_city cookie to the client for storing chosen city name 
-        Response.Cookies.Append("weather_city", viewModel.cityName, new CookieOptions
-        {
-            Expires = DateTimeOffset.UtcNow.AddDays(30)
-        });
+        viewModel.Lat = lat;
+        viewModel.Lon = lon;
+        viewModel.CityDisplayName = cityDisplayName;
+        viewModel.Country = country;
+        viewModel.State = state;
         
-        //Adds weather_units cookie to the client for chosen storing units 
-        Response.Cookies.Append("weather_units", viewModel.units, new CookieOptions
+        //Timer for cookies
+        var cookieOptions = new CookieOptions
         {
             Expires = DateTimeOffset.UtcNow.AddDays(30)
-        });
+        };
+        
+        //Saves cookies 
+        Response.Cookies.Append("weather_city", cityDisplayName ?? "", cookieOptions);
+        Response.Cookies.Append("city_lat", lat.ToString(CultureInfo.InvariantCulture), cookieOptions);
+        Response.Cookies.Append("city_lon", lon.ToString(CultureInfo.InvariantCulture), cookieOptions);
+        Response.Cookies.Append("weather_units", viewModel.units ?? "metric", cookieOptions);
+
+        viewModel.cityName = "";
         
         return View(viewModel);
+    }
+
+    //Sends info about cities in the list to partial _CitySuggestions
+    [HttpGet]
+    public async Task<IActionResult> CitySuggestionsAsync(string query)
+    {
+        if (string.IsNullOrWhiteSpace(query) || query.Length < 2)
+            return Content(string.Empty);
+        
+        var cities = await _geoCoderService.SearchCitiesAsync(query);
+
+        if (cities.Count == 0)
+            return Content(string.Empty);
+        
+        return PartialView("_CitySuggestions", cities);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
