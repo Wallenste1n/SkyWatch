@@ -105,4 +105,10 @@
     <data name="m/h" xml:space="preserve">
         <value>мили/час</value>
     </data>
+    <data name="Country" xml:space="preserve">
+        <value>Страна</value>
+    </data>
+    <data name="TypeCityHint" xml:space="preserve">
+        <value>Введите город и выберете его из списка</value>
+    </data>
 </root>
