@@ -105,4 +105,10 @@
     <data name="m/h" xml:space="preserve">
         <value>miles/hour</value>
     </data>
+    <data name="Country" xml:space="preserve">
+        <value>Country</value>
+    </data>
+    <data name="TypeCityHint" xml:space="preserve">
+        <value>Type city and choose it from the list</value>
+    </data>
 </root>

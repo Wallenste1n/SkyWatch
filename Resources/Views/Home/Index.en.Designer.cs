@@ -105,6 +105,15 @@ namespace SkyWatch.Resources.Views.Home {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Country.
+        /// </summary>
+        internal static string Country {
+            get {
+                return ResourceManager.GetString("Country", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Temperature.
         /// </summary>
         internal static string CurrentTemperature {
@@ -218,6 +227,15 @@ namespace SkyWatch.Resources.Views.Home {
         internal static string TooManyRequests {
             get {
                 return ResourceManager.GetString("TooManyRequests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type city and choose it from the list.
+        /// </summary>
+        internal static string TypeCityHint {
+            get {
+                return ResourceManager.GetString("TypeCityHint", resourceCulture);
             }
         }
         
