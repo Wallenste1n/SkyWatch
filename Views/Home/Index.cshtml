@@ -17,20 +17,30 @@
 <div class="text-center">
     <h1 class="display-4">SkyWatch</h1>
     <form method="post" id="weatherForm">
-        <input name="cityName" value="@Model.cityName"/>
-         
+        <div class="city-search">
+            <input id="cityInput" 
+                   name="cityName" 
+                   autocomplete="off"
+                   placeholder="@Localizer["TypeCityHint"]"/>
+            
+            <div id="suggestions" class="suggestions"></div>
+        </div>
+
+        <input type="hidden" name="Lat" value="@Model.Lat">
+        <input type="hidden" name="Lon" value="@Model.Lon"/>
+        
         <select name="units" id="unitsSelect">
             <option value="metric" selected="@(Model.units == "metric")">@Localizer["Celsius"] &deg;C</option>
             <option value="imperial" selected="@(Model.units == "imperial")">@Localizer["Fahrenheit"] &deg;F</option>
             <option value="standard" selected="@(Model.units == "standard")">@Localizer["Kelvin"] K</option>
         </select>
 
-        <input type="submit" value="@Localizer["SubmitButton"]">
+        @* <input type="submit" value="@Localizer["SubmitButton"]"> *@
     </form>
 
     @*Checks for null, because in first appearence it might cause Exception 
     and shows skeleton before data (probably not working)*@
-    @if (Model.Weather == null && string.IsNullOrWhiteSpace(Model.ErrorType.ToString()))
+    @if (Model.Weather == null && Model.ErrorType == WeatherErrorType.None)
     {
         <div class="weather-skeleton">
             <div class="skeleton-line title"></div>
@@ -44,7 +54,10 @@
     @if (Model.Weather != null)
     { 
         <div id="weather-data">
-            <h1>@Localizer["CityName"] - @Model.Weather.name</h1>
+            @if (!string.IsNullOrEmpty(Model.CityDisplayName))
+            {
+                <h1>@Localizer["CityName"] - @Model.CityDisplayName</h1>
+            }
             <h1>@Localizer["StateOfWeather"] - @Model.Weather.weather[0].Description</h1>
             <h1>@Localizer["CurrentTemperature"] =
                 @Math.Round(Model.Weather.main.temp)
