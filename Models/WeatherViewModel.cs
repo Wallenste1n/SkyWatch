@@ -1,4 +1,6 @@
-﻿namespace SkyWatch.Models;
+﻿using SkyWatch.Models.ApiModels;
+
+namespace SkyWatch.Models;
 
 public class WeatherViewModel
 {
@@ -13,8 +15,9 @@ public class WeatherViewModel
     public string? State { get; set; }
     
     //Keys for localization geographical directions 
-    public string WindDirectionKey { get; set; }
-    public WeatherModel? Weather { get; set; }
+    public string? WindDirectionKey { get; set; }
+    public WeatherModel? CurrentWeather { get; set; }
+    public WeatherHourlyForecastModel? HourlyForecastWeather { get; set; }
 
     //Contains Error types for handling them
     public WeatherErrorType ErrorType { get; set; } = WeatherErrorType.None;
