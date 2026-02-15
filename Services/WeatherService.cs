@@ -2,6 +2,8 @@
 using Newtonsoft.Json;
 using SkyWatch.Interfaces;
 using SkyWatch.Models;
+using SkyWatch.Models.ApiModels;
+using SkyWatch.Models.ServiceResultsModels;
 
 namespace SkyWatch.Services;
 
@@ -95,7 +97,7 @@ public class WeatherService : IWeatherService
         //Saves Fallback states 
         SaveFallback(lat, lon, units, weatherResult);
         
-        return new WeatherServiceResult { Weather = weatherResult };
+        return new WeatherServiceResult { CurrentWeather = weatherResult };
     }
 
     //Trying to fallback code
@@ -123,7 +125,7 @@ public class WeatherService : IWeatherService
 
         return new WeatherServiceResult
         {
-            Weather = fallback.Weather
+            CurrentWeather = fallback.Weather
         };
     }
     
