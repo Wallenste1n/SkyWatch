@@ -123,6 +123,15 @@ namespace SkyWatch.Resources.Views.Home {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        internal static string Date {
+            get {
+                return ResourceManager.GetString("Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fahrenheit.
         /// </summary>
         internal static string Fahrenheit {
@@ -200,6 +209,15 @@ namespace SkyWatch.Resources.Views.Home {
         internal static string MinimumTemperature {
             get {
                 return ResourceManager.GetString("MinimumTemperature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Min / Max.
+        /// </summary>
+        internal static string MinMaxTemperature {
+            get {
+                return ResourceManager.GetString("MinMaxTemperature", resourceCulture);
             }
         }
         

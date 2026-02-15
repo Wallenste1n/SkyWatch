@@ -111,4 +111,10 @@
     <data name="TypeCityHint" xml:space="preserve">
         <value>Type city and choose it from the list</value>
     </data>
+    <data name="Date" xml:space="preserve">
+        <value>Date</value>
+    </data>
+    <data name="MinMaxTemperature" xml:space="preserve">
+        <value>Min / Max</value>
+    </data>
 </root>
