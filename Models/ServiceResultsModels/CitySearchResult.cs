@@ -1,4 +1,4 @@
-﻿namespace SkyWatch.Models;
+﻿namespace SkyWatch.Models.ServiceResultsModels;
 
 //To contain Result from API
 public class CitySearchResult

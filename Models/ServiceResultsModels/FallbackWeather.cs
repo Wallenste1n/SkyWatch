@@ -1,4 +1,6 @@
-﻿namespace SkyWatch.Models;
+﻿using SkyWatch.Models.ApiModels;
+
+namespace SkyWatch.Models.ServiceResultsModels;
 
 //Contains info for fallback
 public class FallbackWeather
