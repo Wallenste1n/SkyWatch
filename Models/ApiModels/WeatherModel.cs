@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SkyWatch.Models;
+namespace SkyWatch.Models.ApiModels;
 
 public class WeatherModel
 {
@@ -17,6 +17,9 @@ public class WeatherModel
     //So in this case it's going to be in the list in the very weird state
     //(should be implemented differently later)
     public List<JsonArrayAttribute> weather { get; set; }
+    
+    //date text for forecast
+    public string dt_txt { get; set; }
 }
 
 public class Main 
@@ -44,4 +47,18 @@ public class Wind
     
     //Wind direction (in degrees)
     public int deg { get; set; }
+}
+
+public class Weather
+{
+    public int id { get; set; }
+    
+    //State of the weather
+    public string main { get; set; }
+    
+    //Weather description
+    public string description { get; set; }
+    
+    //Mb this code will be used later
+    public string icon { get; set; }
 }

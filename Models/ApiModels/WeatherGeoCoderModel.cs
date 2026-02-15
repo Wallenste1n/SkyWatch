@@ -1,4 +1,4 @@
-﻿namespace SkyWatch.Models;
+﻿namespace SkyWatch.Models.ApiModels;
 
 //Geo Coder API handler
 public class WeatherGeoCoderModel
