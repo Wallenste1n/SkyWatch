@@ -92,12 +92,12 @@ public class WeatherService : IWeatherService
         }
         
         var json = await response.Content.ReadAsStringAsync();
-        var weatherResult = JsonConvert.DeserializeObject<WeatherModel>(json);
+        var currentWeatherResult = JsonConvert.DeserializeObject<WeatherModel>(json);
 
         //Saves Fallback states 
-        SaveFallback(lat, lon, units, weatherResult);
+        SaveFallback(lat, lon, units, currentWeatherResult);
         
-        return new WeatherServiceResult { CurrentWeather = weatherResult };
+        return new WeatherServiceResult { CurrentWeather = currentWeatherResult };
     }
 
     //Trying to fallback code
