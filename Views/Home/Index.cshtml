@@ -100,7 +100,10 @@
                             @date.ToString("HH:mm")
                         </div>
 
-                        <div class="hourly-temp">@Math.Round(item.main.temp)&deg;</div>
+                        <div class="hourly-temp">
+                            @Math.Round(item.main.temp)
+                            @Model.TemperatureUnit
+                        </div>
 
                         <div class="hourly-minmax">
                             @Localizer["MinMaxTemperature"]<br/>
