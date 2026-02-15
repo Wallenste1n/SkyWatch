@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace SkyWatch.Models.ApiModels;
+﻿namespace SkyWatch.Models.ApiModels;
 
 public class WeatherModel
 {
@@ -13,10 +11,9 @@ public class WeatherModel
     //Object of Wind class (to get access to "wind" directory of API)
     public Wind wind { get; set; }
     
-    //API for some reason has object in it
-    //So in this case it's going to be in the list in the very weird state
-    //(should be implemented differently later)
-    public List<JsonArrayAttribute> weather { get; set; }
+    //List of Weather object (it contains only 1 element btw)
+    //to get description, and state of the weather
+    public List<Weather> weather { get; set; }
     
     //date text for forecast
     public string dt_txt { get; set; }
