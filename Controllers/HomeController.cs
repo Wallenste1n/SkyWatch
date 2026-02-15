@@ -12,11 +12,13 @@ public class HomeController : Controller
     //for getting WeatherService functions
     private readonly IWeatherService _weatherService;
     private readonly IWeatherGeoCoderService _geoCoderService;
+    private readonly IWeatherHourlyForecastService _forecastService;
 
-    public HomeController(IWeatherService weatherService, IWeatherGeoCoderService geoCoderService)
+    public HomeController(IWeatherService weatherService, IWeatherGeoCoderService geoCoderService, IWeatherHourlyForecastService forecastService)
     {
         _weatherService = weatherService;
         _geoCoderService = geoCoderService;
+        _forecastService = forecastService;
     }
     
     //Gets info of cookies and return weather data
@@ -47,19 +49,28 @@ public class HomeController : Controller
         //if we get cookie of city name, then we get info for model and return it
         if (Math.Abs(lat) > 0.001 && Math.Abs(lon) > 0.001)
         {
-            var result = await _weatherService.GetWeatherAsync(
+            var resultCurrentWeather = await _weatherService.GetWeatherAsync(
                 lat,
                 lon,
                 model.units,
-                model.lang);
+                model.lang
+            );
+
+            var resultForecast = await _forecastService.GetHourlyForecast(
+                lat,
+                lon,
+                model.units,
+                model.lang
+            );
 
             //Sets info to Weather class and type for Error to handle it
-            model.Weather = result.Weather;
-            model.ErrorType = result.ErrorType;
+            model.CurrentWeather = resultCurrentWeather.CurrentWeather;
+            model.HourlyForecastWeather = resultForecast.HourlyForecast;
+            model.ErrorType = resultCurrentWeather.ErrorType;
             
             //Gets geographical direction (East, West etc.) as a key for localization
-            if (model.Weather != null) 
-                model.WindDirectionKey = WindDirectionHelper.GetDirection(model.Weather.wind.deg);
+            if (model.CurrentWeather != null) 
+                model.WindDirectionKey = WindDirectionHelper.GetDirection(model.CurrentWeather.wind.deg);
         }
         
         return View(model);
@@ -75,9 +86,9 @@ public class HomeController : Controller
 
         double lat = 0;
         double lon = 0;
-        string cityDisplayName = null;
-        string country = null;
-        string state = null;
+        string? cityDisplayName = null;
+        string? country = null;
+        string? state = null;
 
         if (!string.IsNullOrWhiteSpace(viewModel.cityName))
         {
@@ -121,21 +132,29 @@ public class HomeController : Controller
         }
 
         //Getting info from current Weather API
-        var result = await _weatherService.GetWeatherAsync(
+        var resultCurrentWeather = await _weatherService.GetWeatherAsync(
             lat,
             lon,
             viewModel.units ?? "metric",
             viewModel.lang
         );
 
-        viewModel.Weather = result.Weather;
-        viewModel.ErrorType = result.ErrorType;
+        var resultForecast = await _forecastService.GetHourlyForecast(
+            lat,
+            lon,
+            viewModel.units ?? "metric",
+            viewModel.lang
+        );
 
-        if (viewModel.Weather == null)
+        viewModel.CurrentWeather = resultCurrentWeather.CurrentWeather;
+        viewModel.HourlyForecastWeather = resultForecast.HourlyForecast;
+        viewModel.ErrorType = resultCurrentWeather.ErrorType;
+
+        if (viewModel.CurrentWeather == null)
             return View(viewModel);
 
         //Fills info to view it on the site
-        viewModel.WindDirectionKey = WindDirectionHelper.GetDirection(viewModel.Weather.wind.deg);
+        viewModel.WindDirectionKey = WindDirectionHelper.GetDirection(viewModel.CurrentWeather.wind.deg);
         
         viewModel.Lat = lat;
         viewModel.Lon = lon;
