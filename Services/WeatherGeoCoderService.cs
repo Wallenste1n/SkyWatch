@@ -2,6 +2,8 @@
 using Newtonsoft.Json;
 using SkyWatch.Interfaces;
 using SkyWatch.Models;
+using SkyWatch.Models.ApiModels;
+using SkyWatch.Models.ServiceResultsModels;
 
 namespace SkyWatch.Services;
 

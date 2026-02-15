@@ -1,4 +1,5 @@
 ﻿using SkyWatch.Models;
+using SkyWatch.Models.ServiceResultsModels;
 
 namespace SkyWatch.Interfaces;
 
