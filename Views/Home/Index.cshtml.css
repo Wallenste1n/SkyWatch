@@ -43,7 +43,7 @@
     width: 335px;
 }
 
-#cityInput{
+#cityInput {
     width: 100%;
     padding: 10px 14px;
     border-radius: 8px;
@@ -64,3 +64,96 @@
     margin-top: 4px;
     overflow: hidden;
 }
+
+.hourly-wrapper {
+    position: relative;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.hourly-scroll {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    
+    overflow-x: auto;
+    scroll-behavior: smooth;
+
+    /* Snap */
+    scroll-snap-type: x mandatory;
+    
+    /* For phones */
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
+}
+
+.hourly-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.hourly-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+.hourly-card {
+    flex: 0 0 160px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(6px);
+    scroll-snap-align: center;
+}
+
+.hourly-card:hover {
+    transform: translateY(-4px);
+    transition: 0.2s ease;
+}
+
+.hourly-day {
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0.8;
+    text-transform: capitalize;
+}
+
+.hourly-time{
+    font-size: 18px;
+    font-weight: 700;
+    margin: 4px 0;
+}
+
+.hourly-temp {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.hourly-minmax {
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+.scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    font-size: 26px;
+    cursor: pointer;
+    z-index: 20;
+    
+    backdrop-filter: blur(6px);
+}
+
+.scroll-btn.left { left: 4px; }
+.scroll-btn.right { right: 4px; }
+
+.scroll-btn.hidden { display: none; }

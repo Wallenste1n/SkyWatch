@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
 @model WeatherViewModel
 @inject IViewLocalizer Localizer
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -40,7 +41,7 @@
 
     @*Checks for null, because in first appearence it might cause Exception 
     and shows skeleton before data (probably not working)*@
-    @if (Model.Weather == null && Model.ErrorType == WeatherErrorType.None)
+    @if (Model.CurrentWeather == null && Model.ErrorType == WeatherErrorType.None)
     {
         <div class="weather-skeleton">
             <div class="skeleton-line title"></div>
@@ -51,36 +52,65 @@
     }
     
     @*Shows weather info*@
-    @if (Model.Weather != null)
+    @if (Model.CurrentWeather != null)
     { 
         <div id="weather-data">
             @if (!string.IsNullOrEmpty(Model.CityDisplayName))
             {
                 <h1>@Localizer["CityName"] - @Model.CityDisplayName</h1>
             }
-            <h1>@Localizer["StateOfWeather"] - @Model.Weather.weather[0].Description</h1>
+            <h1>@Localizer["StateOfWeather"] - @Model.CurrentWeather.weather[0].Description</h1>
             <h1>@Localizer["CurrentTemperature"] =
-                @Math.Round(Model.Weather.main.temp)
+                @Math.Round(Model.CurrentWeather.main.temp)
                 @Model.TemperatureUnit
             </h1>
             <h1>@Localizer["FeelsLikeTemperature"] =
-                @Math.Round(Model.Weather.main.feels_like)
+                @Math.Round(Model.CurrentWeather.main.feels_like)
                 @Model.TemperatureUnit
             </h1>
             <h1>@Localizer["MinimumTemperature"] =
-                @Math.Round(Model.Weather.main.temp_min)
+                @Math.Round(Model.CurrentWeather.main.temp_min)
                 @Model.TemperatureUnit
             </h1>
             <h1>@Localizer["MaximumTemperature"] =
-                @Math.Round(Model.Weather.main.temp_max)
+                @Math.Round(Model.CurrentWeather.main.temp_max)
                 @Model.TemperatureUnit
             </h1>
-            <h1>@Localizer["Humidity"] = @Model.Weather.main.humidity%</h1>
+            <h1>@Localizer["Humidity"] = @Model.CurrentWeather.main.humidity%</h1>
             <h1>@Localizer["WindSpeed"] =
-                @Model.Weather.wind.speed
+                @Model.CurrentWeather.wind.speed
                 @Localizer[$"{Model.SpeedWindUnit}"]
             </h1>
-            <h1>@Localizer["WindDirection"] = @Localizer[$"{Model.WindDirectionKey}"] (@Model.Weather.wind.deg&deg;)</h1>
+            <h1>@Localizer["WindDirection"] = 
+                @Localizer[$"{Model.WindDirectionKey}"] (@Model.CurrentWeather.wind.deg&deg;)</h1>
+        </div>
+        
+        <div class="hourly-wrapper">
+            <button class="scroll-btn left" id="scrollLeft">‹</button>
+            <div class="hourly-scroll hidden" id="hourlyScroll">
+                @foreach (var item in Model.HourlyForecastWeather.list)
+                {
+                    var date = DateTime.Parse(item.dt_txt, CultureInfo.InvariantCulture);
+                    var culture = CultureInfo.CurrentUICulture;
+                    <div class="hourly-card">
+                        <div class="hourly-day">
+                            @culture.DateTimeFormat.GetDayName(date.DayOfWeek)
+                        </div>
+                        <div class="hourly-time">
+                            @date.ToString("HH:mm")
+                        </div>
+
+                        <div class="hourly-temp">@Math.Round(item.main.temp)&deg;</div>
+
+                        <div class="hourly-minmax">
+                            @Localizer["MinMaxTemperature"]<br/>
+                            @Math.Round(item.main.temp_min) @Model.TemperatureUnit /
+                            @Math.Round(item.main.temp_max) @Model.TemperatureUnit
+                        </div>
+                    </div>
+                }
+            </div>
+            <button class="scroll-btn right" id="scrollRight">›</button>
         </div>
     }
 </div>
