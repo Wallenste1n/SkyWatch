@@ -209,11 +209,15 @@
 
 /* Container for locking height */
 .daily-forecast-wrapper {
-    /*max-height: 420px;*/
-    width: 100%;
-    overflow-x: auto;
-    /*overflow: hidden;*/
-    /*position: relative;*/
+    max-height: 420px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.daily-forecast-wrapper::-webkit-scrollbar {
+    display: none;
 }
 
 /* List */
@@ -304,10 +308,9 @@
 }
 
 .daily-column {
-    width: 260px;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
 }
 
 .daily-scroll-btn {
@@ -358,6 +361,11 @@
         flex: unset;
         max-width: none;
         scroll-snap-align: none;
+        transition: transoform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .daily-card.active {
+        transform: scale(0.98);
     }
 }
 
