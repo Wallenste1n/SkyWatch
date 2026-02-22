@@ -8,5 +8,6 @@ public class WeatherServiceResult
     public WeatherModel? CurrentWeather { get; set; }
     public List<WeatherGeoCoderModel>? GeoCoder { get; set; }
     public WeatherHourlyForecastModel? HourlyForecast { get; set; } 
+    public WeatherDailyForecastModel? DailyForecast { get; set; }
     public WeatherErrorType ErrorType { get; set; } = WeatherErrorType.None;
 }
