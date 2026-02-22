@@ -117,4 +117,10 @@
     <data name="MinMaxTemperature" xml:space="preserve">
         <value>Мин / Макс</value>
     </data>
+    <data name="Today" xml:space="preserve">
+        <value>Сегодня</value>
+    </data>
+    <data name="Tomorrow" xml:space="preserve">
+        <value>Завтра</value>
+    </data>
 </root>
