@@ -1,5 +1,6 @@
 ﻿@using System.Globalization
 @using Microsoft.AspNetCore.Mvc.Localization
+@using SkyWatch.Helpers
 @model WeatherViewModel
 @inject IViewLocalizer Localizer
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -106,6 +107,9 @@
                             <div class="daily-body">
                                 <div class="daily-weather">
                                     @dailyItem.weather?[0].description
+                                    <img class="weather-icon" 
+                                         src="@WeatherIconHelper.Icon(dailyItem.weather[0].icon)" 
+                                         alt=""/> 
                                 </div>
 
                                 <div class="daily-temp">
@@ -133,7 +137,12 @@
                 {
                     <h1>@Localizer["CityName"] - @Model.CityDisplayName</h1>
                 }
-                <h1>@Localizer["StateOfWeather"] - @Model.CurrentWeather.weather[0].description</h1>
+                <h1>
+                    @Localizer["StateOfWeather"] - @Model.CurrentWeather.weather[0].description
+                    (<img class="weather-current-icon" 
+                          src="@WeatherIconHelper.Icon(Model.CurrentWeather.weather[0].icon)" 
+                          alt=""/> )
+                </h1>
                 <h1>@Localizer["CurrentTemperature"] =
                     @Math.Round(Model.CurrentWeather.main.temp)
                     @Model.TemperatureUnit
@@ -142,13 +151,10 @@
                     @Math.Round(Model.CurrentWeather.main.feels_like)
                     @Model.TemperatureUnit
                 </h1>
-                <h1>@Localizer["MinimumTemperature"] =
-                    @Math.Round(Model.CurrentWeather.main.temp_min)
-                    @Model.TemperatureUnit
-                </h1>
-                <h1>@Localizer["MaximumTemperature"] =
+                <h1>
+                    @Localizer["MinMaxTemperature"] = 
+                    @Math.Round(Model.CurrentWeather.main.temp_min) / 
                     @Math.Round(Model.CurrentWeather.main.temp_max)
-                    @Model.TemperatureUnit
                 </h1>
                 <h1>@Localizer["Humidity"] = @Model.CurrentWeather.main.humidity%</h1>
                 <h1>@Localizer["WindSpeed"] =
@@ -176,7 +182,13 @@
                             <div class="hourly-time" 
                                  data-unix="@hourlyItem.dt">
                             </div>
-
+                            
+                            <div>
+                                <img class="weather-icon" 
+                                     src="@WeatherIconHelper.Icon(hourlyItem.weather[0].icon)" 
+                                     alt=""/>    
+                            </div>
+                            
                             <div class="hourly-temp">
                                 @Math.Round(hourlyItem.main.temp)
                                 @Model.TemperatureUnit
