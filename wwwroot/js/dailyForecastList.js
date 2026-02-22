@@ -2,11 +2,11 @@
 const dailyScroll = document.getElementById("dailyScroll");
 
 document.getElementById("dailyUp").onclick = () => {
-    dailyScroll.scrollBy({top: -160, behavior: "smooth"});
+    dailyScroll.scrollBy({top: -210, behavior: "smooth"});
 };
 
 document.getElementById("dailyDown").onclick = () => {
-    dailyScroll.scrollBy({top: 160, behavior: "smooth"});  
+    dailyScroll.scrollBy({top: 210, behavior: "smooth"});  
 };
 
 // When clicked on the day hourly card is displayed of clicked day in daily forecast
