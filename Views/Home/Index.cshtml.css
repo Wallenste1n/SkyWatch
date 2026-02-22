@@ -149,7 +149,7 @@
     
     background: rgba(255, 255, 255, 0.12);
     border-radius: 14px;
-    padding: 10px;
+    padding: 8px;
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.15);
     /*backdrop-filter: blur(6px);*/
@@ -366,4 +366,39 @@
     .daily-scroll-btn {
         display: none;
     }
+}
+
+.time-format-switch {
+    display: flex;
+    gap: 6px;
+
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: white;
+    margin-left: 4px;
+}
+
+.time-btn {
+    min-width: 48px;
+    padding: 8px 0;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+
+    transition: background 0.2s, color 0.2s;
+}
+
+.time-btn.active {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+.time-btn:hover {
+    background: rgba(0,0,0,0.5);
 }
