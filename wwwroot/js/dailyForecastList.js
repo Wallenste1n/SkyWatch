@@ -49,3 +49,42 @@ hourly.addEventListener("scroll", () => {
 });
 
 document.querySelector(".daily-card.today")?.click();
+
+/* ====== For swipe on phones ====== */
+(() => {
+    const container = document.getElementById('dailyScroll');
+    
+    if(!container) return;
+    
+    let startY = 0;
+    let currentY = 0;
+    let isTouching = false;
+    
+    const SWIPE_THRESHOLD = 40;
+    const SCROLL_STEP = 120;
+    
+    container.addEventListener("touchstart", e => {
+        startY = e.touches[0].clientY;
+        isTouching = true;
+    }, {passive: true});
+    
+    container.addEventListener("touchmove", e => {
+        if(!isTouching) return;
+        currentY = e.touches[0].clientY;
+    }, {passive: true});
+    
+    container.addEventListener("touchend", () => {
+        if(!isTouching) return;
+        
+        const deltaY = startY - currentY;
+        
+        if(Math.abs(deltaY) > SWIPE_THRESHOLD) {
+            container.scrollBy({
+                top: deltaY > 0 ? SCROLL_STEP : -SCROLL_STEP,
+                behavior: "smooth"
+            });
+        }
+        
+        isTouching = false;
+    });
+})();
