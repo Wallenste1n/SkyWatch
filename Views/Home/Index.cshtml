@@ -8,112 +8,186 @@
 }
 
 @if (Model.ErrorType != WeatherErrorType.None)
-{ 
+{
     <div class="alert alert-danger">
         @Localizer[Model.ErrorType.ToString()]
     </div>
 }
 
-@*Form for inputing name of the city in API*@
-<div class="text-center">
-    <h1 class="display-4">SkyWatch</h1>
-    <form method="post" id="weatherForm">
+@* Search bar with suggestions*@
+<h1 class="display-4">SkyWatch</h1>
+<form method="post" id="weatherForm" class="weather-form">
+    <div class="form-block">
         <div class="city-search">
-            <input id="cityInput" 
-                   name="cityName" 
+            <input id="cityInput"
+                   name="cityName"
                    autocomplete="off"
                    placeholder="@Localizer["TypeCityHint"]"/>
-            
+
             <div id="suggestions" class="suggestions"></div>
         </div>
-
-        <input type="hidden" name="Lat" value="@Model.Lat">
-        <input type="hidden" name="Lon" value="@Model.Lon"/>
-        
-        <select name="units" id="unitsSelect">
-            <option value="metric" selected="@(Model.units == "metric")">@Localizer["Celsius"] &deg;C</option>
-            <option value="imperial" selected="@(Model.units == "imperial")">@Localizer["Fahrenheit"] &deg;F</option>
-            <option value="standard" selected="@(Model.units == "standard")">@Localizer["Kelvin"] K</option>
-        </select>
-
-        @* <input type="submit" value="@Localizer["SubmitButton"]"> *@
-    </form>
-
-    @*Checks for null, because in first appearence it might cause Exception 
-    and shows skeleton before data (probably not working)*@
-    @if (Model.CurrentWeather == null && Model.ErrorType == WeatherErrorType.None)
-    {
-        <div class="weather-skeleton">
-            <div class="skeleton-line title"></div>
-            <div class="skeleton-line temp"></div>
-            <div class="skeleton-line"></div>
-            <div class="skeleton-line short"></div>
-        </div>
-    }
     
-    @*Shows weather info*@
-    @if (Model.CurrentWeather != null)
-    { 
-        <div id="weather-data">
-            @if (!string.IsNullOrEmpty(Model.CityDisplayName))
-            {
-                <h1>@Localizer["CityName"] - @Model.CityDisplayName</h1>
-            }
-            <h1>@Localizer["StateOfWeather"] - @Model.CurrentWeather.weather[0].description</h1>
-            <h1>@Localizer["CurrentTemperature"] =
-                @Math.Round(Model.CurrentWeather.main.temp)
-                @Model.TemperatureUnit
-            </h1>
-            <h1>@Localizer["FeelsLikeTemperature"] =
-                @Math.Round(Model.CurrentWeather.main.feels_like)
-                @Model.TemperatureUnit
-            </h1>
-            <h1>@Localizer["MinimumTemperature"] =
-                @Math.Round(Model.CurrentWeather.main.temp_min)
-                @Model.TemperatureUnit
-            </h1>
-            <h1>@Localizer["MaximumTemperature"] =
-                @Math.Round(Model.CurrentWeather.main.temp_max)
-                @Model.TemperatureUnit
-            </h1>
-            <h1>@Localizer["Humidity"] = @Model.CurrentWeather.main.humidity%</h1>
-            <h1>@Localizer["WindSpeed"] =
-                @Model.CurrentWeather.wind.speed
-                @Localizer[$"{Model.SpeedWindUnit}"]
-            </h1>
-            <h1>@Localizer["WindDirection"] = 
-                @Localizer[$"{Model.WindDirectionKey}"] (@Model.CurrentWeather.wind.deg&deg;)</h1>
+        @* Unit selector *@
+        <div class="unit-selector">
+            <button type="button"
+                    class="unit-btn @(Model.units == "metric" ? "active" : "")"
+                    data-unit="metric">
+                &deg;C
+            </button>
+            
+            <button type="button"
+                    class="unit-btn @(Model.units == "imperial" ? "active" : "")"
+                    data-unit="imperial">
+                &deg;F
+            </button>
+            
+            <button type="button"
+                    class="unit-btn @(Model.units == "standard" ? "active" : "")"
+                    data-unit="standard">
+                K
+            </button>
         </div>
-        
-        <div class="hourly-wrapper">
-            <button class="scroll-btn left" id="scrollLeft">‹</button>
-            <div class="hourly-scroll hidden" id="hourlyScroll">
-                @foreach (var item in Model.HourlyForecastWeather.list)
-                {
-                    var date = DateTime.Parse(item.dt_txt, CultureInfo.InvariantCulture);
-                    var culture = CultureInfo.CurrentUICulture;
-                    <div class="hourly-card">
-                        <div class="hourly-day">
-                            @culture.DateTimeFormat.GetDayName(date.DayOfWeek)
-                        </div>
-                        <div class="hourly-time">
-                            @date.ToString("HH:mm")
-                        </div>
+        <input type="hidden" name="units" id="unitsInput" value="@Model.units">
+    </div>
+    
+    <input type="hidden" name="Lat" value="@Model.Lat">
+    <input type="hidden" name="Lon" value="@Model.Lon"/>
+</form>
 
-                        <div class="hourly-temp">
-                            @Math.Round(item.main.temp)
-                            @Model.TemperatureUnit
-                        </div>
+@*Checks for null, because in first appearence it might cause Exception 
+    and shows skeleton before data (probably not working)*@
+@if (Model.CurrentWeather == null && Model.ErrorType == WeatherErrorType.None)
+{
+    <div class="weather-skeleton">
+        <div class="skeleton-line title"></div>
+        <div class="skeleton-line temp"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line short"></div>
+    </div>
+}
 
-                        <div class="hourly-minmax">
-                            @Localizer["MinMaxTemperature"]<br/>
-                            @Math.Round(item.main.temp_min) @Model.TemperatureUnit /
-                            @Math.Round(item.main.temp_max) @Model.TemperatureUnit
+@* Shows weather info *@
+@if (Model.CurrentWeather != null)
+{
+    <div class="weather-layout">
+        <div class="daily-column">
+            <button class="daily-scroll-btn up" id="dailyUp">▲</button>
+
+            @* Daily Forecast *@
+            <div class="daily-forecast-wrapper" id="dailyScroll">
+                <div class="daily-forecast">
+                    @foreach (var dailyItem in Model.DailyForecastWeather.list)
+                    {
+                        var date = DateTimeOffset.FromUnixTimeSeconds(dailyItem.dt)
+                            .ToLocalTime()
+                            .Date;
+
+                        var today = DateTime.Today;
+
+                        bool isToday = date == today;
+                        bool isTomorrow = date == today.AddDays(1);
+
+                        string dayLabel =
+                            isToday ? $"{Localizer["Today"].Value} · {date:dd MMM}"
+                            : isTomorrow ? $"{Localizer["Tomorrow"].Value} · {date:dd MMM}"
+                            : date.ToString("dddd dd MMM", CultureInfo.CurrentUICulture);
+
+                        <div class="daily-card @(isToday ? "today" : "") @(isTomorrow ? "tomorrow" : "")"
+                             data-date="@date.ToString("yyyy-MM-dd")">
+                            <div class="daily-header">
+                                <h3 class="daily-day">@dayLabel</h3>
+                            </div>
+
+                            <div class="daily-body">
+                                <div class="daily-weather">
+                                    @dailyItem.weather?[0].description
+                                </div>
+
+                                <div class="daily-temp">
+                                    @Math.Round(dailyItem.temp.day)
+                                    @Model.TemperatureUnit
+                                </div>
+
+                                <div class="daily-minmax">
+                                    @Math.Round(dailyItem.temp.min) @Model.TemperatureUnit /
+                                    @Math.Round(dailyItem.temp.max) @Model.TemperatureUnit
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
-            <button class="scroll-btn right" id="scrollRight">›</button>
+
+            <button class="daily-scroll-btn down" id="dailyDown">▼</button>
         </div>
-    }
-</div>
+
+        @* Current information *@
+        <div class="weather-main">
+            <div id="weather-data">
+                @if (!string.IsNullOrEmpty(Model.CityDisplayName))
+                {
+                    <h1>@Localizer["CityName"] - @Model.CityDisplayName</h1>
+                }
+                <h1>@Localizer["StateOfWeather"] - @Model.CurrentWeather.weather[0].description</h1>
+                <h1>@Localizer["CurrentTemperature"] =
+                    @Math.Round(Model.CurrentWeather.main.temp)
+                    @Model.TemperatureUnit
+                </h1>
+                <h1>@Localizer["FeelsLikeTemperature"] =
+                    @Math.Round(Model.CurrentWeather.main.feels_like)
+                    @Model.TemperatureUnit
+                </h1>
+                <h1>@Localizer["MinimumTemperature"] =
+                    @Math.Round(Model.CurrentWeather.main.temp_min)
+                    @Model.TemperatureUnit
+                </h1>
+                <h1>@Localizer["MaximumTemperature"] =
+                    @Math.Round(Model.CurrentWeather.main.temp_max)
+                    @Model.TemperatureUnit
+                </h1>
+                <h1>@Localizer["Humidity"] = @Model.CurrentWeather.main.humidity%</h1>
+                <h1>@Localizer["WindSpeed"] =
+                    @Model.CurrentWeather.wind.speed
+                    @Localizer[$"{Model.SpeedWindUnit}"]
+                </h1>
+                <h1>@Localizer["WindDirection"] =
+                    @Localizer[$"{Model.WindDirectionKey}"] (@Model.CurrentWeather.wind.deg&deg;)
+                </h1>
+            </div>
+
+            @* Hourly Forecast *@
+            <div class="hourly-wrapper">
+                
+                <button class="scroll-btn left" id="scrollLeft">‹</button>
+                <div class="hourly-scroll hidden" id="hourlyScroll">
+                    @foreach (var hourlyItem in Model.HourlyForecastWeather.list)
+                    {
+                        var date = DateTime.Parse(hourlyItem.dt_txt, CultureInfo.InvariantCulture);
+                        var culture = CultureInfo.CurrentUICulture;
+                        <div class="hourly-card" data-date="@date.Date.ToString("yyyy-MM-dd")">
+                            <div class="hourly-day">
+                                @culture.DateTimeFormat.GetDayName(date.DayOfWeek)
+                            </div>
+                            <div class="hourly-time">
+                                @date.ToString("HH:mm")
+                            </div>
+
+                            <div class="hourly-temp">
+                                @Math.Round(hourlyItem.main.temp)
+                                @Model.TemperatureUnit
+                            </div>
+
+                            <div class="hourly-minmax">
+                                @Localizer["MinMaxTemperature"]<br/>
+                                @Math.Round(hourlyItem.main.temp_min) @Model.TemperatureUnit /
+                                @Math.Round(hourlyItem.main.temp_max) @Model.TemperatureUnit
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <button class="scroll-btn right" id="scrollRight">›</button>
+            </div>
+        </div>
+    </div>
+}
