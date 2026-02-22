@@ -17,6 +17,9 @@ public class WeatherModel
     
     //date text for forecast
     public string dt_txt { get; set; }
+    
+    //date in unix format
+    public string dt { get; set; }
 }
 
 public class Main 
