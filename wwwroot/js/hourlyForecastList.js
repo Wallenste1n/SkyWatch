@@ -71,3 +71,64 @@ container.addEventListener("touchend", () =>{
     }
     isDragging = false;
 });
+
+//for 12/24 hours modes
+document.addEventListener("DOMContentLoaded", () => {
+    const buttons = document.querySelectorAll(".time-btn");
+    const timeElements = document.querySelectorAll("[data-unix]")
+
+    // locale auto-detect
+    const locale = navigator.language || "en-US";
+    let timeFormat = locale.startsWith("en-US") ? "12" : "24";
+
+    // cookie override
+    const cookieMatch = document.cookie.match(/time_format=(12|24)/);
+    if(cookieMatch) timeFormat = cookieMatch[1];
+
+    // apply initial state
+    setActiveButton(timeFormat);
+    renderTimes(timeFormat);
+
+    // button click
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            timeFormat = btn.dataset.format;
+
+            document.cookie = `time_format=${timeFormat}; path=/; max-age=2592000`;
+
+            setActiveButton(timeFormat);
+            renderTimes(timeFormat);
+        });
+    });
+
+    // Sets active button
+    function setActiveButton (format) {
+        buttons.forEach(b =>
+            b.classList.toggle("active", b.dataset.format === format)
+        );
+    }
+
+    // Renders unix time to the date 
+    function renderTimes (format) {
+        timeElements.forEach(el => {
+            const unix = parseInt(el.dataset.unix);
+            if(!unix) return;
+
+            const date = new Date(unix * 1000);
+
+            el.textContent = formatTime(date, format);
+        });
+    }
+
+    // Sets time Format 
+    function formatTime(date, format) {
+        return new Intl.DateTimeFormat(
+            locale,
+            {
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: format === "12"
+            }
+        ).format(date);
+    }
+});
