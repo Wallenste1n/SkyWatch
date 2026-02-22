@@ -48,6 +48,11 @@
             </button>
         </div>
         <input type="hidden" name="units" id="unitsInput" value="@Model.units">
+        
+        <div class="time-format-switch">
+            <button type="button" class="time-btn" data-format="24">24h</button>
+            <button type="button" class="time-btn" data-format="12">12h</button>
+        </div>
     </div>
     
     <input type="hidden" name="Lat" value="@Model.Lat">
@@ -168,8 +173,8 @@
                             <div class="hourly-day">
                                 @culture.DateTimeFormat.GetDayName(date.DayOfWeek)
                             </div>
-                            <div class="hourly-time">
-                                @date.ToString("HH:mm")
+                            <div class="hourly-time" 
+                                 data-unix="@hourlyItem.dt">
                             </div>
 
                             <div class="hourly-temp">
