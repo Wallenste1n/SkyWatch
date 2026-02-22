@@ -1,4 +1,4 @@
-﻿namespace SkyWatch.Helper;
+﻿namespace SkyWatch.Helpers;
 
 public class WindDirectionHelper
 {
