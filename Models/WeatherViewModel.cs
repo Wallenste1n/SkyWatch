@@ -18,6 +18,8 @@ public class WeatherViewModel
     public string? WindDirectionKey { get; set; }
     public WeatherModel? CurrentWeather { get; set; }
     public WeatherHourlyForecastModel? HourlyForecastWeather { get; set; }
+    
+    public WeatherDailyForecastModel? DailyForecastWeather { get; set; }
 
     //Contains Error types for handling them
     public WeatherErrorType ErrorType { get; set; } = WeatherErrorType.None;
