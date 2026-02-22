@@ -12,13 +12,20 @@ public class HomeController : Controller
     //for getting WeatherService functions
     private readonly IWeatherService _weatherService;
     private readonly IWeatherGeoCoderService _geoCoderService;
-    private readonly IWeatherHourlyForecastService _forecastService;
+    private readonly IWeatherHourlyForecastService _hourlyForecastService;
+    private readonly IWeatherDailyForecastService _dailyForecastService;
 
-    public HomeController(IWeatherService weatherService, IWeatherGeoCoderService geoCoderService, IWeatherHourlyForecastService forecastService)
+    public HomeController
+        (
+            IWeatherService weatherService, 
+            IWeatherGeoCoderService geoCoderService, 
+            IWeatherHourlyForecastService hourlyForecastService, 
+            IWeatherDailyForecastService dailyForecastService)
     {
         _weatherService = weatherService;
         _geoCoderService = geoCoderService;
-        _forecastService = forecastService;
+        _hourlyForecastService = hourlyForecastService;
+        _dailyForecastService = dailyForecastService;
     }
     
     //Gets info of cookies and return weather data
@@ -56,7 +63,14 @@ public class HomeController : Controller
                 model.lang
             );
 
-            var resultForecast = await _forecastService.GetHourlyForecast(
+            var resultHourlyForecast = await _hourlyForecastService.GetHourlyForecast(
+                lat,
+                lon,
+                model.units,
+                model.lang
+            );
+
+            var resultDailyForecast = await _dailyForecastService.GetDailyForecastAsync(
                 lat,
                 lon,
                 model.units,
@@ -65,7 +79,8 @@ public class HomeController : Controller
 
             //Sets info to Weather class and type for Error to handle it
             model.CurrentWeather = resultCurrentWeather.CurrentWeather;
-            model.HourlyForecastWeather = resultForecast.HourlyForecast;
+            model.HourlyForecastWeather = resultHourlyForecast.HourlyForecast;
+            model.DailyForecastWeather = resultDailyForecast.DailyForecast;
             model.ErrorType = resultCurrentWeather.ErrorType;
             
             //Gets geographical direction (East, West etc.) as a key for localization
@@ -139,7 +154,14 @@ public class HomeController : Controller
             viewModel.lang
         );
 
-        var resultForecast = await _forecastService.GetHourlyForecast(
+        var resultHourlyForecast = await _hourlyForecastService.GetHourlyForecast(
+            lat,
+            lon,
+            viewModel.units ?? "metric",
+            viewModel.lang
+        );
+
+        var resultDailyForecast = await _dailyForecastService.GetDailyForecastAsync(
             lat,
             lon,
             viewModel.units ?? "metric",
@@ -147,7 +169,8 @@ public class HomeController : Controller
         );
 
         viewModel.CurrentWeather = resultCurrentWeather.CurrentWeather;
-        viewModel.HourlyForecastWeather = resultForecast.HourlyForecast;
+        viewModel.HourlyForecastWeather = resultHourlyForecast.HourlyForecast;
+        viewModel.DailyForecastWeather = resultDailyForecast.DailyForecast;
         viewModel.ErrorType = resultCurrentWeather.ErrorType;
 
         if (viewModel.CurrentWeather == null)
