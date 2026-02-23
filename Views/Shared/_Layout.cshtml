@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"]SkyWatch</title>
     <script type="importmap"></script>
+    <script src="js/themeStart.js"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/SkyWatch.styles.css" asp-append-version="true"/>
@@ -21,28 +22,41 @@
             <p>@Localizer["LoadingMessage"]</p>
         </div>
         <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SkyWatch</a>
+            @* <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SkyWatch</a> *@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@Localizer["NameOfWeatherTabInNavigator"]</a>
-                    </li>
+                    @* <li class="nav-item"> *@
+                    @*     <a class="nav-element" asp-area="" asp-controller="Home" asp-action="Index">@Localizer["NameOfWeatherTabInNavigator"]</a> *@
+                    @* </li> *@
                 </ul>
             </div>
             @*Language changing system*@
-            <form asp-controller="Culture" asp-action="SetLanguage" method="post">
-                <label>@Localizer["LanguageLabel"]</label>
-                <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString"/>
-                <select name="culture" onchange="this.form.submit()">
-                    <option value="en" selected="@(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "en")">English</option>
-                    <option value="ru" selected="@(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ru")">Русский</option>
-                </select>
-            </form>
-        </div>
+            <div class="theme-switcher">
+                <button type="button" class="theme-btn" data-theme="light">
+                    <img class="theme-icon light" src="icons/theme/light.png" alt=""/>
+                </button>
+                <button type="button" class="theme-btn" data-theme="dark">
+                    <img class="theme-icon dark" src="icons/theme/dark.png" alt=""/>
+                </button>
+                <button type="button" class="theme-btn" data-theme="auto">
+                    <img class="theme-icon" src="icons/theme/auto.png" alt=""/>
+                </button>
+            </div> 
+                <form asp-controller="Culture" asp-action="SetLanguage" method="post">
+                    <label>@Localizer["LanguageLabel"]</label>
+                    <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString"/>
+                    <div class="language-select">
+                        <select class="language-list" name="culture" onchange="this.form.submit()">
+                            <option value="en" selected="@(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "en")">English</option>
+                            <option value="ru" selected="@(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ru")">Русский</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
     </nav>
 </header>
 <div class="container">
@@ -51,7 +65,7 @@
     </main>
 </div>
 
-<footer class="border-top footer text-muted">
+<footer class="border-top footer">
     &copy; 2026 - SkyWatch
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -61,6 +75,7 @@
 <script src="~/js/unitSelector.js" asp-append-version="true"></script>
 <script src="~/js/hourlyForecastList.js" asp-append-version="true"></script>
 <script src="~/js/dailyForecastList.js" asp-append-version="true"></script>
+<script src="~/js/theme.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
