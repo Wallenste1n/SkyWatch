@@ -153,8 +153,8 @@
                 </h1>
                 <h1>
                     @Localizer["MinMaxTemperature"] = 
-                    @Math.Round(Model.CurrentWeather.main.temp_min) / 
-                    @Math.Round(Model.CurrentWeather.main.temp_max)
+                    @Math.Round(Model.CurrentWeather.main.temp_min) @Model.TemperatureUnit / 
+                    @Math.Round(Model.CurrentWeather.main.temp_max) @Model.TemperatureUnit
                 </h1>
                 <h1>@Localizer["Humidity"] = @Model.CurrentWeather.main.humidity%</h1>
                 <h1>@Localizer["WindSpeed"] =
