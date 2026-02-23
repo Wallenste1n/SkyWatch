@@ -14,20 +14,20 @@ a {
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
-  border-color: #1861ac;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color: #fff;
   background-color: #1b6ec2;
-  border-color: #1861ac;
 }
 
 .border-top {
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid;
+  border-color: var(--border-color) !important;
 }
 .border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid;
+  border-color: var(--border-color) !important;
 }
 
 .box-shadow {
@@ -45,6 +45,9 @@ button.accept-policy {
   width: 100%;
   white-space: nowrap;
   line-height: 60px;
+  color: var(--text-main);
+  border-top: 3px;
+  border-color: var(--border-color);
 }
 
 .loader{
@@ -74,4 +77,100 @@ button.accept-policy {
 
 @keyframes spin {
   to {transform: rotate(360deg);}
+}
+
+.navbar {
+  background: var(--bg-main) !important;
+  border-color: var(--border-color);
+}
+
+.theme-switcher {
+  display: flex;
+  gap: 6px;
+  margin-left: 16px;
+  margin-right: 8px;
+}
+
+.theme-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.theme-btn.active {
+  background: var(--accent);
+  color: white;
+}
+
+.theme-btn:hover {
+  background: var(--suggestion-hover);
+}
+
+.theme-icon {
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+  flex-shrink: 0;
+  color: var(--text-main);
+}
+
+.theme-icon.light {
+  color: white;
+}
+
+.language-select {
+  position: relative;
+  display: inline-block;
+}
+
+.language-list {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  padding: 5px 40px 3px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+
+  background-color: var(--bg-card);
+  color: var(--text-main);
+
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Custom arrow */
+.language-select::after {
+  content: "▼";
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.language-list:hover {
+  border-color: var(--accent);
+}
+
+.language-list:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(37, 140, 251, 0.25);
+}
+
+.language-list option {
+  background: var(--bg-card);
+  color: var(--text-main);
 }
