@@ -320,6 +320,7 @@
     cursor: pointer;
     opacity: 0.6;
     transition: opacity 0.2s;
+    color: var(--text-main);
 }
 
 .daily-scroll-btn:hover {
@@ -427,4 +428,27 @@
     object-fit: contain;
     filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
     flex-shrink: 0;
+}
+
+.daily-card,
+.hourly-card,
+.unit-selector,
+.unit-btn,
+.time-format-switch,
+.time-btn,
+.city-search input {
+    background: var(--bg-card);
+    color: var(--text-main);
+    border-color: var(--border-color);
+}
+
+.daily-weather,
+.hourly-minmax,
+.weather-skeleton {
+    color: var(--text-muted);
+}
+
+.daily-card.today {
+    color: var(--text-main);
+    background: var(--bg-card);
 }
