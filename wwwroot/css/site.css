@@ -1,3 +1,38 @@
+:root[data-theme="light"] {
+  --bg-main: #ffffff;
+  --bg-card: #ffffff;
+  --bg-muted: #f5f5f5;
+
+  --text-main: #111827;
+  --text-muted: #555;
+
+  --border-color: #606e7e;
+  --accent: #258cfb;
+  
+  --suggestion-hover: #f5f5f5;
+  --suggestion-active: #e0e0e0;
+
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark theme */
+:root[data-theme="dark"] {
+  --bg-main: #090b10;
+  --bg-card: #1e293b;
+  --bg-muted: #020617;
+
+  --text-main: #e5e7eb;
+  --text-muted: #94a3b8;
+
+  --border-color: #334155;
+  --accent: #3b82f6;
+
+  --suggestion-hover: #334155;
+  --suggestion-active: #293343;
+
+  --shadow: rgba(0, 0, 0, 0.6);
+}
+
 html {
   font-size: 14px;
 }
@@ -19,6 +54,8 @@ html {
 
 body {
   margin-bottom: 60px;
+  background: var(--bg-main);
+  color: var(--text-main);
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
