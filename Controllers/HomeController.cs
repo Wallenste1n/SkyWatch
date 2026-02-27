@@ -54,40 +54,27 @@ public class HomeController : Controller
         };
         
         //if we get cookie of city name, then we get info for model and return it
-        if (Math.Abs(lat) > 0.001 && Math.Abs(lon) > 0.001)
-        {
-            var resultCurrentWeather = await _weatherService.GetWeatherAsync(
-                lat,
-                lon,
-                model.units,
-                model.lang
-            );
-
-            var resultHourlyForecast = await _hourlyForecastService.GetHourlyForecast(
-                lat,
-                lon,
-                model.units,
-                model.lang
-            );
-
-            var resultDailyForecast = await _dailyForecastService.GetDailyForecastAsync(
-                lat,
-                lon,
-                model.units,
-                model.lang
-            );
-
-            //Sets info to Weather class and type for Error to handle it
-            model.CurrentWeather = resultCurrentWeather.CurrentWeather;
-            model.HourlyForecastWeather = resultHourlyForecast.HourlyForecast;
-            model.DailyForecastWeather = resultDailyForecast.DailyForecast;
-            model.ErrorType = resultCurrentWeather.ErrorType;
-            
-            //Gets geographical direction (East, West etc.) as a key for localization
-            if (model.CurrentWeather != null) 
-                model.WindDirectionKey = WindDirectionHelper.GetDirection(model.CurrentWeather.wind.deg);
-        }
+        if (!(Math.Abs(lat) > 0.001) || !(Math.Abs(lon) > 0.001)) return View(model);
         
+        var resultCurrentWeather = await _weatherService.GetWeatherAsync
+            (lat, lon, model.units, model.lang);
+
+        var resultHourlyForecast = await _hourlyForecastService.GetHourlyForecast
+            (lat, lon, model.units, model.lang);
+
+        var resultDailyForecast = await _dailyForecastService.GetDailyForecastAsync
+            (lat, lon, model.units, model.lang);
+
+        //Sets info to Weather class and type for Error to handle it
+        model.CurrentWeather = resultCurrentWeather.CurrentWeather;
+        model.HourlyForecastWeather = resultHourlyForecast.HourlyForecast;
+        model.DailyForecastWeather = resultDailyForecast.DailyForecast;
+        model.ErrorType = resultCurrentWeather.ErrorType;
+            
+        //Gets geographical direction (East, West etc.) as a key for localization
+        if (model.CurrentWeather != null) 
+            model.WindDirectionKey = WindDirectionHelper.GetDirection(model.CurrentWeather.wind.deg);
+
         return View(model);
     }
     
@@ -147,26 +134,14 @@ public class HomeController : Controller
         }
 
         //Getting info from current Weather API
-        var resultCurrentWeather = await _weatherService.GetWeatherAsync(
-            lat,
-            lon,
-            viewModel.units ?? "metric",
-            viewModel.lang
-        );
+        var resultCurrentWeather = await _weatherService.GetWeatherAsync
+            (lat, lon, viewModel.units ?? "metric", viewModel.lang);
 
-        var resultHourlyForecast = await _hourlyForecastService.GetHourlyForecast(
-            lat,
-            lon,
-            viewModel.units ?? "metric",
-            viewModel.lang
-        );
+        var resultHourlyForecast = await _hourlyForecastService.GetHourlyForecast
+            (lat, lon, viewModel.units ?? "metric", viewModel.lang);
 
-        var resultDailyForecast = await _dailyForecastService.GetDailyForecastAsync(
-            lat,
-            lon,
-            viewModel.units ?? "metric",
-            viewModel.lang
-        );
+        var resultDailyForecast = await _dailyForecastService.GetDailyForecastAsync
+            (lat, lon, viewModel.units ?? "metric", viewModel.lang);
 
         viewModel.CurrentWeather = resultCurrentWeather.CurrentWeather;
         viewModel.HourlyForecastWeather = resultHourlyForecast.HourlyForecast;
